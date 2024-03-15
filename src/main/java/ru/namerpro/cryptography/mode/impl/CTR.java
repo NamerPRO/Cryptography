@@ -1,8 +1,7 @@
-package ru.namerpro.cryptography.context.mode.impl;
+package ru.namerpro.cryptography.mode.impl;
 
-import lombok.RequiredArgsConstructor;
-import ru.namerpro.cryptography.Utils.Pair;
-import ru.namerpro.cryptography.Utils.Utility;
+import ru.namerpro.cryptography.utils.Pair;
+import ru.namerpro.cryptography.utils.Utility;
 import ru.namerpro.cryptography.api.EncryptMode;
 import ru.namerpro.cryptography.api.SymmetricEncrypter;
 

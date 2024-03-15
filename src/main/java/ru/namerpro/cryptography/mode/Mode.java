@@ -1,4 +1,4 @@
-package ru.namerpro.cryptography.context.mode;
+package ru.namerpro.cryptography.mode;
 
 public enum Mode {
     ECB,

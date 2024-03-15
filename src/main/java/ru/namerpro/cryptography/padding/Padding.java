@@ -1,4 +1,4 @@
-package ru.namerpro.cryptography.context.padding;
+package ru.namerpro.cryptography.padding;
 
 public enum Padding {
     Zeros,

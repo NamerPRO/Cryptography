@@ -71,6 +71,9 @@ public class DES implements SymmetricEncrypter, KeyExpansion, EncryptingConversi
     private final FeistelNetwork feistelNetwork;
 
     public DES(byte[] key) {
+        if (key.length != 8) {
+            throw new IllegalArgumentException("Wrong key size provided! Expected 64 bits (8 bytes).");
+        }
         this.feistelNetwork = new FeistelNetwork(this,  key,this, 16);
     }
 
@@ -117,10 +120,6 @@ public class DES implements SymmetricEncrypter, KeyExpansion, EncryptingConversi
 
     private long toLong48(byte[] arr) {
         return (arr[5] & 0xFF) | ((arr[4] & 0xFF) << 8L) | ((arr[3] & 0xFF) << 16L) | ((long) (arr[2] & 0xFF) << 24L) | ((long) (arr[1] & 0xFF) << 32L) | ((long) (arr[0] & 0xFF) << 40L);
-    }
-
-    private long toLong64(byte[] arr) {
-        return (arr[7] & 0xFF) | ((arr[6] & 0xFF) << 8L) | ((arr[5] & 0xFF) << 16L) | ((long) (arr[4] & 0xFF) << 24L) | ((long) (arr[3] & 0xFF) << 32L) | ((long) (arr[2] & 0xFF) << 40L) | ((long) (arr[1] & 0xFF) << 48L) | ((long) (arr[0] & 0xFF) << 56L);
     }
 
     private byte getLeadingZeros(byte x) {

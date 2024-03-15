@@ -1,4 +1,4 @@
-package ru.namerpro.cryptography.Utils;
+package ru.namerpro.cryptography.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -15,7 +15,7 @@ public class Pair<T, U> {
     private U value;
 
     public static <T, U> Pair<T, U> of(T first, U second) {
-        return new Pair<T, U>(first, second);
+        return new Pair<>(first, second);
     }
 
 }
