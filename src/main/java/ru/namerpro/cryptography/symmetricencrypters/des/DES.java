@@ -71,6 +71,9 @@ public class DES implements SymmetricEncrypter, KeyExpansion, EncryptingConversi
     private final FeistelNetwork feistelNetwork;
 
     public DES(byte[] key) {
+        if (key.length != 8) {
+            throw new IllegalArgumentException("Wrong key size provided! Expected 64 bits (8 bytes).");
+        }
         this.feistelNetwork = new FeistelNetwork(this,  key,this, 16);
     }
 

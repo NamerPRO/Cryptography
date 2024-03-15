@@ -1,4 +1,4 @@
-package ru.namerpro.cryptography.context.padding.impl;
+package ru.namerpro.cryptography.padding.impl;
 
 import ru.namerpro.cryptography.api.PaddingMode;
 

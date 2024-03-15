@@ -1,6 +1,6 @@
 package ru.namerpro.cryptography.feistel;
 
-import ru.namerpro.cryptography.Utils.Utility;
+import ru.namerpro.cryptography.utils.Utility;
 import ru.namerpro.cryptography.api.EncryptingConversion;
 import ru.namerpro.cryptography.api.KeyExpansion;
 

@@ -1,4 +1,4 @@
-package ru.namerpro.cryptography.Utils;
+package ru.namerpro.cryptography.utils;
 
 import lombok.SneakyThrows;
 
