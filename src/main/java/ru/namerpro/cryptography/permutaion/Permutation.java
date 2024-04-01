@@ -16,7 +16,10 @@ public class Permutation {
         return number == 0 ? -1 : Integer.numberOfTrailingZeros(Integer.highestOneBit(0xFF & number));
     }
 
-    @Deprecated
+    /**
+     * @deprecated inefficient realization / remains because tests depend on it / will be removed when tests change their dependency
+     */
+    @Deprecated(since = "1.0", forRemoval = true)
     public static byte[] toByteArray(long input) {
         byte[] output = BigInteger.valueOf(input).toByteArray();
         if (output[0] == 0 && output.length > 1) {
@@ -31,11 +34,8 @@ public class Permutation {
 
     public static byte[] rearrange(byte[] input, byte numberOfLeadingZerosIncludedInZeroElementOfArray, int[] pBlock, Rule rule) {
         int bitsInOutputCount = pBlock.length;
-        int outputArraySize = bitsInOutputCount / 8;
         int firstOutputBlockSize = bitsInOutputCount % 8;
-        if (firstOutputBlockSize > 0) {
-            ++outputArraySize;
-        }
+        int outputArraySize = getOutputArraySize(bitsInOutputCount, firstOutputBlockSize);
         byte leadingPosition = (byte) (getLeadingOnePosition(input[0]) + numberOfLeadingZerosIncludedInZeroElementOfArray + (input.length == 1 && input[0] == 0 ? 1 : 0));
         byte[] output = new byte[outputArraySize];
         int totalBitsCount = 8 * (input.length - 1) + leadingPosition + 1;
@@ -63,17 +63,21 @@ public class Permutation {
         return output;
     }
 
+    private static int getOutputArraySize(int bitsInOutputCount, int firstOutputBlockSize) {
+        return bitsInOutputCount / 8 + firstOutputBlockSize > 0 ? 1 : 0;
+    }
+
     private static byte getTakenBit(byte[] input, Rule rule, int bitIndex, int leadingPosition) {
         byte takenBit;
         if (rule == Rule.FROM_LEFT_FIRST_IS_ONE || rule == Rule.FROM_LEFT_FIRST_IS_ZERO) {
             if (bitIndex <= leadingPosition) {
-                takenBit = (byte) ((input[0] & (1 << (leadingPosition - bitIndex))) >> (leadingPosition - bitIndex));
+                takenBit = (byte) ((input[0] & 0xff & (1 << (leadingPosition - bitIndex))) >> (leadingPosition - bitIndex));
             } else {
                 int castedIndex = bitIndex - leadingPosition - 1;
-                takenBit = (byte) ((input[castedIndex / 8 + 1] & (1 << (7 - castedIndex % 8))) >> (7 - castedIndex % 8));
+                takenBit = (byte) ((input[castedIndex / 8 + 1] & 0xff & (1 << (7 - castedIndex % 8))) >> (7 - castedIndex % 8));
             }
         } else {
-            takenBit = (byte) ((input[input.length - bitIndex / 8 - 1] & (1 << (bitIndex % 8))) >> (bitIndex % 8));
+            takenBit = (byte) ((input[input.length - bitIndex / 8 - 1] & 0xff & (1 << (bitIndex % 8))) >> (bitIndex % 8));
         }
         return takenBit;
     }

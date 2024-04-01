@@ -6,6 +6,8 @@ import java.math.BigInteger;
 
 public class CryptoMath {
 
+    private CryptoMath() {}
+
     public static int jacobyOf(BigInteger a, BigInteger n) {
         if (n.compareTo(BigInteger.ONE) <= 0 || n.remainder(BigInteger.TWO).equals(BigInteger.ZERO)) {
             throw new IllegalArgumentException("Required odd n > 1, but " + n + " found!");

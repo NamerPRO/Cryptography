@@ -33,7 +33,7 @@ public class SymmetricEncrypterContext implements AutoCloseable {
     private final SymmetricEncrypter encrypter;
     private final int blockSize;
 
-    public SymmetricEncrypterContext(Encrypter encrypter, byte[] key, Mode mode, Padding padding, byte[] iv, Object... arguments) {
+    public SymmetricEncrypterContext(Encrypter encrypter, byte[] key, Mode mode, Padding padding, byte[] iv) {
         switch (encrypter) {
             case DES -> {
                 this.encrypter = new DES(key);
@@ -43,7 +43,7 @@ public class SymmetricEncrypterContext implements AutoCloseable {
                 this.encrypter = new DEAL(key);
                 this.blockSize = 16;
             }
-            default -> throw new RuntimeException("Unexpected error occurred while trying to set encrypter!");
+            default -> throw new IllegalArgumentException("Unexpected error occurred while trying to set encrypter!");
         }
 
         if (iv == null) {
@@ -66,7 +66,7 @@ public class SymmetricEncrypterContext implements AutoCloseable {
 
         this.padding = switch (padding) {
             case PKCS7 -> new PKCS7();
-            case Zeros -> new Zeros();
+            case ZEROS -> new Zeros();
             case ISO_10126 -> new ISO10126();
             case ANSI_X_923 -> new ANSIX923();
         };
@@ -90,6 +90,7 @@ public class SymmetricEncrypterContext implements AutoCloseable {
                 os.close();
                 return new EncryptionState.Success();
             } catch (IOException | ExecutionException | InterruptedException error) {
+                Thread.currentThread().interrupt();
                 return new EncryptionState.Error(error);
             }
         });
@@ -113,6 +114,7 @@ public class SymmetricEncrypterContext implements AutoCloseable {
                 os.close();
                 return new EncryptionState.Success();
             } catch (IOException | ExecutionException | InterruptedException error) {
+                Thread.currentThread().interrupt();
                 return new EncryptionState.Error(error);
             }
         });

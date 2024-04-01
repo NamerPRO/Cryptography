@@ -8,9 +8,9 @@ import ru.namerpro.cryptography.permutaion.Permutation;
 
 public class DES implements SymmetricEncrypter, KeyExpansion, EncryptingConversion {
 
-    private static final int bBlockCount = 8;
-    private static final int bitsInOneBBlock = 6;
-    private static final int firstSixBitsMask = 63;
+    private static final int B_BLOCK_COUNT = 8;
+    private static final int BITS_IN_ONE_B_BLOCK = 6;
+    private static final int FIRST_SIX_BITS_MASK = 63;
     private final int[] expansionFunction = { 32, 1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 9, 8, 9, 10, 11, 12, 13, 12, 13, 14, 15, 16, 17, 16, 17, 18, 19, 20, 21, 20, 21, 22, 23, 24, 25, 24, 25, 26, 27, 28, 29, 28, 29, 30, 31, 32, 1 };
     private final byte[][][] sTables = {
             {
@@ -97,9 +97,9 @@ public class DES implements SymmetricEncrypter, KeyExpansion, EncryptingConversi
         long xor = toLong48(expandedBlock) ^ toLong48(roundKey);
         byte bi;
         byte[] result = new byte[4];
-        for (int i = 0; i < bBlockCount; ++i) {
-            bi = (byte) ((xor >>> (bitsInOneBBlock * i)) & firstSixBitsMask);
-            int j = bBlockCount - i - 1;
+        for (int i = 0; i < B_BLOCK_COUNT; ++i) {
+            bi = (byte) ((xor >>> (BITS_IN_ONE_B_BLOCK * i)) & FIRST_SIX_BITS_MASK);
+            int j = B_BLOCK_COUNT - i - 1;
             byte replacement = sTables[j][getRow(bi)][getColumn(bi)];
             result[j / 2] |= j % 2 == 0 ? (byte) (replacement << 4) : replacement;
         }

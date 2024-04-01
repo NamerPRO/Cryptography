@@ -1,7 +1,7 @@
 package ru.namerpro.cryptography.asymmetricencrypters.rsa.vinnerattack;
 
+import lombok.extern.java.Log;
 import ru.namerpro.cryptography.asymmetricencrypters.rsa.RSA;
-import ru.namerpro.cryptography.asymmetricencrypters.rsa.fermatattack.FermatAttack;
 import ru.namerpro.cryptography.utils.Pair;
 import ru.namerpro.cryptography.utils.Utility;
 import ru.namerpro.cryptography.utils.stateless.CryptoMath;
@@ -12,9 +12,12 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
+@Log
 public class VinnerAttack {
 
-    private static final String vinnerAttackText = "You have been attacked using Vinner scheme! This text is meant to check whether d is found.";
+    private VinnerAttack() {}
+
+    private static final String VINNER_ATTACK_TEST = "You have been attacked using Vinner scheme! This text is meant to check whether d is found.";
 
     public static Pair<ArrayList<Pair<BigInteger, BigInteger>>, Pair<BigInteger, BigInteger>> attack(RSA.RSAKeyGenerator.PublicKey key) throws ExecutionException, InterruptedException {
         ArrayList<BigInteger> coefficients = getContinuedFraction(key.e(), key.n());
@@ -28,15 +31,16 @@ public class VinnerAttack {
                             coefficients.get(i).multiply(fractions.get(i - 1).getValue()).add(i == 1 ? BigInteger.ZERO : fractions.get(i - 2).getValue())
                     )
             );
-            BigInteger[] encrypted = rsa.encrypt(vinnerAttackText.getBytes(), key).get();
+            BigInteger[] encrypted = rsa.encrypt(VINNER_ATTACK_TEST.getBytes(), key).get();
             try {
                 byte[] decrypted = rsa.decrypt(encrypted, new RSA.RSAKeyGenerator.PrivateKey(fractions.get(i).getValue(), key.n())).get();
-                if (Arrays.equals(decrypted, vinnerAttackText.getBytes())) {
+                if (Arrays.equals(decrypted, VINNER_ATTACK_TEST.getBytes())) {
                     break;
                 }
-            } catch (Throwable ignored) {}
+            } catch (ExecutionException ignored) {
+                // ignored
+            }
         }
-        System.out.println();
         var lastFraction = fractions.get(fractions.size() - 1);
         BigInteger phi = getPhi(lastFraction, key);
         return Pair.of(fractions, Pair.of(phi, lastFraction.getValue()));
@@ -72,13 +76,13 @@ public class VinnerAttack {
         var numberOne = BigInteger.probablePrime(1024, new Random());
         var numberTwo = BigInteger.probablePrime(1024, new Random());
 
-        System.out.println("p = " + numberOne);
-        System.out.println("q = " + numberTwo);
-        System.out.println("|q - p| = " + numberTwo.subtract(numberOne).abs());
+        log.info("p = " + numberOne);
+        log.info("q = " + numberTwo);
+        log.info("|q - p| = " + numberTwo.subtract(numberOne).abs());
 
         var phi = numberOne.subtract(BigInteger.ONE).multiply(numberTwo.subtract(BigInteger.ONE));
 
-        System.out.println("phi = " + phi);
+        log.info("phi = " + phi);
 
         var n = numberOne.multiply(numberTwo);
 
@@ -94,21 +98,21 @@ public class VinnerAttack {
         var e = CryptoMath.egcd(d, phi).getValue().getKey();
         e = e.remainder(phi).add(phi).remainder(phi);
 
-        System.out.println("e = " + e);
-        System.out.println("d = " + d);
-        System.out.println("N = " + n);
+        log.info("e = " + e);
+        log.info("d = " + d);
+        log.info("N = " + n);
 
-        System.out.println("==========================\n");
+        log.info("==========================\n");
         var stolen = VinnerAttack.attack(new RSA.RSAKeyGenerator.PublicKey(e, n));
-        System.out.println("phi = " + stolen.getValue().getKey());
-        System.out.println("d = " + stolen.getValue().getValue());
-        System.out.println("phi is correct = " + stolen.getValue().getKey().equals(phi));
-        System.out.println("d is correct = " + stolen.getValue().getValue().equals(d));
-        System.out.println("Fractions: ");
+        log.info("phi = " + stolen.getValue().getKey());
+        log.info("d = " + stolen.getValue().getValue());
+        log.info("phi is correct = " + stolen.getValue().getKey().equals(phi));
+        log.info("d is correct = " + stolen.getValue().getValue().equals(d));
+        log.info("Fractions: ");
         for (var i : stolen.getKey()) {
-            System.out.println(i.getKey() + "/" + i.getValue());
+            log.info(i.getKey() + "/" + i.getValue());
         }
-        System.out.println("\n==========================");
+        log.info("\n==========================");
     }
 
 }

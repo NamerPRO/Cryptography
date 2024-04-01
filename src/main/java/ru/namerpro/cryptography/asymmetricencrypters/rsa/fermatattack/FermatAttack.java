@@ -1,5 +1,7 @@
 package ru.namerpro.cryptography.asymmetricencrypters.rsa.fermatattack;
 
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import ru.namerpro.cryptography.asymmetricencrypters.rsa.RSA;
 import ru.namerpro.cryptography.asymmetricencrypters.rsa.RSA.RSAKeyGenerator.PublicKey;
 import ru.namerpro.cryptography.utils.Pair;
@@ -9,7 +11,10 @@ import ru.namerpro.cryptography.utils.stateless.CryptoMath;
 import java.math.BigInteger;
 import java.util.Random;
 
+@Log
 public class FermatAttack {
+
+    private FermatAttack() {}
 
     public static Pair<BigInteger, BigInteger> attack(PublicKey key) {
         BigInteger p = Utility.bigSqrtN(key.n(), 2).or(BigInteger.ONE);
@@ -29,13 +34,13 @@ public class FermatAttack {
         var numberOne = BigInteger.probablePrime(2048, new Random());
         var numberTwo = numberOne.nextProbablePrime();
 
-        System.out.println("p = " + numberOne);
-        System.out.println("q = " + numberTwo);
-        System.out.println("q - p = " + numberTwo.subtract(numberOne));
+        log.info("p = " + numberOne);
+        log.info("q = " + numberTwo);
+        log.info("q - p = " + numberTwo.subtract(numberOne));
 
         var phi = numberOne.subtract(BigInteger.ONE).multiply(numberTwo.subtract(BigInteger.ONE));
 
-        System.out.println("phi = " + phi);
+        log.info("phi = " + phi);
 
         var n = numberOne.multiply(numberTwo);
         var e = Utility.getRandom(BigInteger.valueOf(65537), phi);
@@ -46,21 +51,21 @@ public class FermatAttack {
             e = e.add(BigInteger.TWO);
         }
 
-        System.out.println("e = " + e);
-        System.out.println("N = " + n);
+        log.info("e = " + e);
+        log.info("N = " + n);
 
         BigInteger d = CryptoMath.egcd(e, phi).getValue().getKey();
         d = d.remainder(phi).add(phi).remainder(phi);
 
-        System.out.println("d = " + d);
+        log.info("d = " + d);
 
-        System.out.println("==========================\n");
-        var stolen = FermatAttack.attack(new RSA.RSAKeyGenerator.PublicKey(e, n));
-        System.out.println("phi = " + stolen.getValue());
-        System.out.println("d = " + stolen.getKey());
-        System.out.println("phi is correct = " + stolen.getValue().equals(phi));
-        System.out.println("d is correct = " + stolen.getKey().equals(d));
-        System.out.println("\n==========================");
+        log.info("==========================\n");
+        var stolen = FermatAttack.attack(new PublicKey(e, n));
+        log.info("phi = " + stolen.getValue());
+        log.info("d = " + stolen.getKey());
+        log.info("phi is correct = " + stolen.getValue().equals(phi));
+        log.info("d is correct = " + stolen.getKey().equals(d));
+        log.info("\n==========================");
     }
 
 }

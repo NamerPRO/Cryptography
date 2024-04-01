@@ -73,8 +73,4 @@ public class DEAL implements SymmetricEncrypter, KeyExpansion {
         return new byte[][]{rk1, rk2, rk3, rk4, rk5, rk6, rk7, rk8};
     }
 
-    private byte getRandomByte() {
-        return (byte) (Math.random() * 255 - 128);
-    }
-
 }

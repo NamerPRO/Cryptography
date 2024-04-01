@@ -21,11 +21,11 @@ public class CFB implements EncryptMode {
     public byte[] apply(byte[] src, int blockSize, SymmetricEncrypter encrypter) {
         byte[][] split = Utility.splitToBlocks(src, blockSize);
         byte[] c = new byte[src.length];
-        byte[] prev_c = iv;
+        byte[] prevC = iv;
         for (int i = 0; i < split.length; ++i) {
-            prev_c = Utility.xor(encrypter.encrypt(prev_c), split[i]);
+            prevC = Utility.xor(encrypter.encrypt(prevC), split[i]);
             for (int j = 0; j < blockSize; ++j) {
-                c[blockSize * i + j] = prev_c[j];
+                c[blockSize * i + j] = prevC[j];
             }
         }
         return c;

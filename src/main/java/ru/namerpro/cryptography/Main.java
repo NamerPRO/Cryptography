@@ -1,18 +1,19 @@
 package ru.namerpro.cryptography;
 
+import lombok.extern.java.Log;
+import ru.namerpro.cryptography.asymmetricencrypters.rsa.fermatattack.FermatAttack;
 import ru.namerpro.cryptography.asymmetricencrypters.rsa.vinnerattack.VinnerAttack;
 
 import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
+@Log
 public class Main {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
-//        FermatAttack.runDemoOfFermatAttack();
-
         VinnerAttack.runDemoVinnerAttack();
+//
+//        VinnerAttack.runDemoVinnerAttack();
 
         //        FermatAttack.attack(new RSA.RSAKeyGenerator.PublicKey())
         //        RSA rsa = new RSA(1024);

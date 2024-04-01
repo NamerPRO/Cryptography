@@ -21,11 +21,11 @@ public class PCBC implements EncryptMode {
     public byte[] apply(byte[] src, int blockSize, SymmetricEncrypter encrypter) {
         byte[][] split = Utility.splitToBlocks(src, blockSize);
         byte[] c = new byte[src.length];
-        byte[] prev_c = { 0 };
+        byte[] prevC = { 0 };
         for (int i = 0; i < split.length; ++i) {
-            prev_c = encrypter.encrypt(Utility.xor(split[i], (i == 0 ? iv : Utility.xor(split[i - 1], prev_c))));
+            prevC = encrypter.encrypt(Utility.xor(split[i], (i == 0 ? iv : Utility.xor(split[i - 1], prevC))));
             for (int j = 0; j < blockSize; ++j) {
-                c[blockSize * i + j] = prev_c[j];
+                c[blockSize * i + j] = prevC[j];
             }
         }
         return c;
@@ -41,11 +41,11 @@ public class PCBC implements EncryptMode {
         }
         byte[][] decryptData = (byte[][]) Utility.queryResult(futures, blockSize, -1, true);
         byte[] m = new byte[src.length];
-        byte[] prev_m = { 0 };
+        byte[] prevM = { 0 };
         for (int i = 0; i < decryptData.length; ++i) {
-            prev_m = Utility.xor(decryptData[i], (i == 0 ? iv : Utility.xor(split[i - 1], prev_m)));
+            prevM = Utility.xor(decryptData[i], (i == 0 ? iv : Utility.xor(split[i - 1], prevM)));
             for (int j = 0; j < blockSize; ++j) {
-                m[blockSize * i + j] = prev_m[j];
+                m[blockSize * i + j] = prevM[j];
             }
         }
         return m;
