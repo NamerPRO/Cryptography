@@ -21,11 +21,11 @@ public class CBC implements EncryptMode {
     public byte[] apply(byte[] src, int blockSize, SymmetricEncrypter encrypter) {
         byte[][] split = Utility.splitToBlocks(src, blockSize);
         byte[] c = new byte[src.length];
-        byte[] prev_c = iv;
+        byte[] prevC = iv;
         for (int i = 0; i < split.length; ++i) {
-            prev_c = encrypter.encrypt(Utility.xor(split[i], prev_c));
+            prevC = encrypter.encrypt(Utility.xor(split[i], prevC));
             for (int j = 0; j < blockSize; ++j) {
-                c[blockSize * i + j] = prev_c[j];
+                c[blockSize * i + j] = prevC[j];
             }
         }
         return c;

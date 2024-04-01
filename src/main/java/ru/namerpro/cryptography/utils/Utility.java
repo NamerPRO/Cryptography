@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 
 import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -122,6 +123,31 @@ public class Utility {
         System.arraycopy(left, 0, out, 0, left.length);
         System.arraycopy(right, 0, out, left.length, right.length);
         return out;
+    }
+
+    public static BigInteger getRandom(BigInteger from, BigInteger to) {
+        BigInteger random;
+        do {
+            random = new BigInteger(to.bitLength(), new SecureRandom());
+        } while (random.compareTo(from) < 0 || random.compareTo(to) >= 0);
+        return random;
+    }
+
+    public static BigInteger bigSqrtN(BigInteger x, int n) {
+        BigInteger left = BigInteger.ZERO;
+        BigInteger right = x;
+        while (right.subtract(left).compareTo(BigInteger.ONE) > 0) {
+            BigInteger mid = left.add(right).divide(BigInteger.TWO);
+            int cmp = mid.pow(n).compareTo(x);
+            if (cmp > 0) {
+                right = mid;
+            } else if (cmp < 0) {
+                left = mid;
+            } else {
+                return mid;
+            }
+        }
+        return left;
     }
 
 }

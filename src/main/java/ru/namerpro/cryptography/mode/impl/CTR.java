@@ -29,17 +29,15 @@ public class CTR implements EncryptMode {
 
     @Override
     public byte[] apply(byte[] src, int blockSize, SymmetricEncrypter encrypter) {
-        List<Pair<Integer, Future<byte[]>>> futures = new ArrayList<>();
-        byte[][] split = Utility.splitToBlocks(src, blockSize);
-        for (int i = 0; i < split.length; ++i) {
-            int finalI = i;
-            futures.add(Pair.of(i, service.submit(() -> Utility.xor(split[finalI], encrypter.encrypt(getCounter(iv, finalI))))));
-        }
-        return Utility.queryResult(futures, blockSize, src.length);
+        return innerApplyReverseLogic(src, blockSize, encrypter);
     }
 
     @Override
     public byte[] reverse(byte[] src, int blockSize, SymmetricEncrypter encrypter) {
+        return innerApplyReverseLogic(src, blockSize, encrypter);
+    }
+
+    private byte[] innerApplyReverseLogic(byte[] src, int blockSize, SymmetricEncrypter encrypter) {
         List<Pair<Integer, Future<byte[]>>> futures = new ArrayList<>();
         byte[][] split = Utility.splitToBlocks(src, blockSize);
         for (int i = 0; i < split.length; ++i) {

@@ -1,38 +1,29 @@
 package ru.namerpro.cryptography;
 
-import ru.namerpro.cryptography.context.SymmetricEncrypterContext;
-import ru.namerpro.cryptography.context.encrypter.Encrypter;
-import ru.namerpro.cryptography.mode.Mode;
-import ru.namerpro.cryptography.padding.Padding;
+import lombok.extern.java.Log;
+import ru.namerpro.cryptography.asymmetricencrypters.rsa.fermatattack.FermatAttack;
+import ru.namerpro.cryptography.asymmetricencrypters.rsa.vinnerattack.VinnerAttack;
 
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
+@Log
 public class Main {
 
-    public static void main(String[] args) {
-        byte[] key = { 0x02, 0x01, (byte) 0xff, (byte) 0xcc, 0x24, (byte) 0x93, 0x22, 0x33, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x02, 0x01, (byte) 0xff, (byte) 0xcc, 0x24, (byte) 0x93, 0x22, 0x33, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18 };
-        byte[] iv = { 0x1, 0x22, 0x3f, (byte) 0xff, 0x22, 0x44, 0x44, 0x44, 0x1, 0x22, 0x3f, (byte) 0xff, 0x22, 0x44, 0x44, 0x44 };
-        try(SymmetricEncrypterContext context = new SymmetricEncrypterContext(Encrypter.DEAL, key, Mode.PCBC, Padding.ISO_10126, iv)) {
-            var resp = context.encrypt("Hello World!".getBytes()).get();
-            System.out.println(Arrays.toString(resp));
-            var resp2 = context.decrypt(resp).get();
-            System.out.println(new String(resp2));
-
-//            context.decrypt("C:/Users/AP-3a/Desktop/encrypted_animal.jpeg", "C:/Users/AP-3a/Desktop/decrypted_animal.jpeg").get();
-//            context.encrypt("THis is an exampLE texT to TEST deS!!! 847328r2hf83".getBytes()).thenAccept(encrypted -> {
-//                System.out.println("Encrypted:");
-//                System.out.println(Arrays.toString(encrypted));
+    public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
+        VinnerAttack.runDemoVinnerAttack();
 //
-//                context.decrypt(encrypted).thenAccept(decrypted -> {
-//                    System.out.println("Decrypted:");
-//                    System.out.println(new String(decrypted));
-//                });
-//            });
-//            Thread.sleep(250);
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
+//        VinnerAttack.runDemoVinnerAttack();
+
+        //        FermatAttack.attack(new RSA.RSAKeyGenerator.PublicKey())
+        //        RSA rsa = new RSA(1024);
+//        var keys = rsa.getKeyGeneratorInstance().getKeys();
+//
+//        String m = "Жили-были в одном волшебном лесу маленькие существа, называемые капибарами. Они были очень дружелюбными и добрыми созданиями, которые всегда помогали друг другу в беде. Однажды, в этом лесу произошел несчастный случай: одна из капибар по имени Капищера потерялась.";
+//        BigInteger[] encrypted = rsa.encrypt(m.getBytes(), keys.getKey()).get();
+//
+//        byte[] decrypted = rsa.decrypt(encrypted, keys.getValue()).get();
+//        System.out.println(new String(decrypted, StandardCharsets.UTF_8));
     }
 
 }
