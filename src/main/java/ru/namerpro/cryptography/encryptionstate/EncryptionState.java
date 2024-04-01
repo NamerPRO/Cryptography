@@ -1,4 +1,4 @@
-package ru.namerpro.cryptography.context.state;
+package ru.namerpro.cryptography.encryptionstate;
 
 public sealed interface EncryptionState {
 

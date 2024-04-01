@@ -10,7 +10,7 @@ import ru.namerpro.cryptography.padding.impl.ANSIX923;
 import ru.namerpro.cryptography.padding.impl.ISO10126;
 import ru.namerpro.cryptography.padding.impl.PKCS7;
 import ru.namerpro.cryptography.padding.impl.Zeros;
-import ru.namerpro.cryptography.context.state.EncryptionState;
+import ru.namerpro.cryptography.encryptionstate.EncryptionState;
 import ru.namerpro.cryptography.mode.impl.*;
 import ru.namerpro.cryptography.symmetricencrypters.deal.DEAL;
 import ru.namerpro.cryptography.symmetricencrypters.des.DES;

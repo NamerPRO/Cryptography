@@ -15,7 +15,7 @@ public class DEAL implements SymmetricEncrypter, KeyExpansion {
         if (key.length != 32 && key.length != 24 && key.length != 16) {
             throw new IllegalArgumentException("Wrong key size provided! Permitted ones are: 128 bits (16 bytes), 192 bits (24 bytes), 256 bits (32 bytes).");
         }
-        this.des = new DES(new byte[] { getRandomByte(), getRandomByte(), getRandomByte(), getRandomByte(), getRandomByte(), getRandomByte(), getRandomByte(), getRandomByte() });
+        this.des = new DES(new byte[] { 0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7 });
         this.feistelNetwork = new FeistelNetwork(new DealFeistelFunction(des), key, this, key.length == 32 ? 8 : 6);
     }
 
