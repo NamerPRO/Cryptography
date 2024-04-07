@@ -1,8 +1,6 @@
 package ru.namerpro.cryptography.asymmetricencrypters.rsa.fermatattack;
 
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
-import ru.namerpro.cryptography.asymmetricencrypters.rsa.RSA;
 import ru.namerpro.cryptography.asymmetricencrypters.rsa.RSA.RSAKeyGenerator.PublicKey;
 import ru.namerpro.cryptography.utils.Pair;
 import ru.namerpro.cryptography.utils.Utility;
@@ -11,7 +9,7 @@ import ru.namerpro.cryptography.utils.stateless.CryptoMath;
 import java.math.BigInteger;
 import java.util.Random;
 
-@Log
+@Slf4j
 public class FermatAttack {
 
     private FermatAttack() {}

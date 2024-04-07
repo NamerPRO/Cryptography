@@ -1,6 +1,6 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.namerpro.cryptography.api.ProbabilityTest;
+import ru.namerpro.cryptography.api.probability.ProbabilityTest;
 import ru.namerpro.cryptography.probabilitytests.fermat.FermatProbabilityTest;
 
 import java.math.BigInteger;

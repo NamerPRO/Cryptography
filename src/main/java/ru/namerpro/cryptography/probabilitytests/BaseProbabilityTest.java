@@ -1,6 +1,6 @@
 package ru.namerpro.cryptography.probabilitytests;
 
-import ru.namerpro.cryptography.api.ProbabilityTest;
+import ru.namerpro.cryptography.api.probability.ProbabilityTest;
 import ru.namerpro.cryptography.utils.Utility;
 import ru.namerpro.cryptography.utils.stateless.CryptoMath;
 

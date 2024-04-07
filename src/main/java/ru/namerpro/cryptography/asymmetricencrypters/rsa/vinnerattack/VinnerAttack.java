@@ -1,6 +1,7 @@
 package ru.namerpro.cryptography.asymmetricencrypters.rsa.vinnerattack;
 
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import ru.namerpro.cryptography.asymmetricencrypters.rsa.RSA;
 import ru.namerpro.cryptography.utils.Pair;
 import ru.namerpro.cryptography.utils.Utility;
@@ -12,7 +13,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
-@Log
+@Slf4j
 public class VinnerAttack {
 
     private VinnerAttack() {}

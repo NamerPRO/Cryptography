@@ -3,8 +3,8 @@ package ru.namerpro.cryptography.mode.impl;
 import lombok.RequiredArgsConstructor;
 import ru.namerpro.cryptography.utils.Pair;
 import ru.namerpro.cryptography.utils.Utility;
-import ru.namerpro.cryptography.api.EncryptMode;
-import ru.namerpro.cryptography.api.SymmetricEncrypter;
+import ru.namerpro.cryptography.api.symmetric.modes.EncryptMode;
+import ru.namerpro.cryptography.api.symmetric.SymmetricEncrypter;
 
 import java.util.ArrayList;
 import java.util.List;

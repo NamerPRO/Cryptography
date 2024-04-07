@@ -1,6 +1,6 @@
 package ru.namerpro.cryptography.padding.impl;
 
-import ru.namerpro.cryptography.api.PaddingMode;
+import ru.namerpro.cryptography.api.symmetric.modes.PaddingMode;
 
 import java.util.Random;
 

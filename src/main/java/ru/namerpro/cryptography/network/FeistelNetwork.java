@@ -1,16 +1,16 @@
-package ru.namerpro.cryptography.feistel;
+package ru.namerpro.cryptography.network;
 
 import ru.namerpro.cryptography.utils.Utility;
-import ru.namerpro.cryptography.api.EncryptingConversion;
-import ru.namerpro.cryptography.api.KeyExpansion;
+import ru.namerpro.cryptography.api.symmetric.networksfunctions.feistel.FeistelFunction;
+import ru.namerpro.cryptography.api.symmetric.expansion.KeyExpansion;
 
 public class FeistelNetwork {
 
-    private final EncryptingConversion feistelFunction;
+    private final FeistelFunction feistelFunction;
     private final int amountOfRounds;
     private final byte[][] roundKeys;
 
-    public FeistelNetwork(EncryptingConversion feistelFunction, byte[] key, KeyExpansion expansion, int amountOfRounds) {
+    public FeistelNetwork(FeistelFunction feistelFunction, byte[] key, KeyExpansion expansion, int amountOfRounds) {
         this.feistelFunction = feistelFunction;
         this.roundKeys = expansion.expandKey(key);
         this.amountOfRounds = amountOfRounds;

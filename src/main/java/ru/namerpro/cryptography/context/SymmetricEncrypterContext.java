@@ -1,8 +1,8 @@
 package ru.namerpro.cryptography.context;
 
-import ru.namerpro.cryptography.api.EncryptMode;
-import ru.namerpro.cryptography.api.PaddingMode;
-import ru.namerpro.cryptography.api.SymmetricEncrypter;
+import ru.namerpro.cryptography.api.symmetric.modes.EncryptMode;
+import ru.namerpro.cryptography.api.symmetric.modes.PaddingMode;
+import ru.namerpro.cryptography.api.symmetric.SymmetricEncrypter;
 import ru.namerpro.cryptography.context.encrypter.Encrypter;
 import ru.namerpro.cryptography.mode.Mode;
 import ru.namerpro.cryptography.padding.Padding;
@@ -14,6 +14,7 @@ import ru.namerpro.cryptography.encryptionstate.EncryptionState;
 import ru.namerpro.cryptography.mode.impl.*;
 import ru.namerpro.cryptography.symmetricencrypters.deal.DEAL;
 import ru.namerpro.cryptography.symmetricencrypters.des.DES;
+import ru.namerpro.cryptography.symmetricencrypters.rijndael.Rijndael;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class SymmetricEncrypterContext implements AutoCloseable {
     private final SymmetricEncrypter encrypter;
     private final int blockSize;
 
-    public SymmetricEncrypterContext(Encrypter encrypter, byte[] key, Mode mode, Padding padding, byte[] iv) {
+    public SymmetricEncrypterContext(Encrypter encrypter, byte[] key, Mode mode, Padding padding, byte[] iv, Object... options) {
         switch (encrypter) {
             case DES -> {
                 this.encrypter = new DES(key);
@@ -42,6 +43,18 @@ public class SymmetricEncrypterContext implements AutoCloseable {
             case DEAL -> {
                 this.encrypter = new DEAL(key);
                 this.blockSize = 16;
+            }
+            case RIJNDAEL -> {
+                if (!(options[0] instanceof Rijndael.RijndaelBlockSize rijndaelBlockSize)
+                        || !(options[1] instanceof Integer modulo)) {
+                    throw new IllegalArgumentException("Rijndael mode requires these constructor parameters: Encrypter encrypter, byte[] key, Mode mode, Padding padding, byte[] iv, RijndaelBlockSize rijndaelBlockSize, int modulo.");
+                }
+                this.encrypter = new Rijndael(rijndaelBlockSize, key, modulo.byteValue());
+                this.blockSize = switch (rijndaelBlockSize) {
+                    case SZ_128_BITS -> 16;
+                    case SZ_192_BITS -> 24;
+                    case SZ_256_BITS -> 32;
+                };
             }
             default -> throw new IllegalArgumentException("Unexpected error occurred while trying to set encrypter!");
         }

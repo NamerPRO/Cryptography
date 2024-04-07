@@ -1,12 +1,12 @@
 package ru.namerpro.cryptography.symmetricencrypters.des;
 
-import ru.namerpro.cryptography.api.EncryptingConversion;
-import ru.namerpro.cryptography.api.KeyExpansion;
-import ru.namerpro.cryptography.api.SymmetricEncrypter;
-import ru.namerpro.cryptography.feistel.FeistelNetwork;
+import ru.namerpro.cryptography.api.symmetric.networksfunctions.feistel.FeistelFunction;
+import ru.namerpro.cryptography.api.symmetric.expansion.KeyExpansion;
+import ru.namerpro.cryptography.api.symmetric.SymmetricEncrypter;
+import ru.namerpro.cryptography.network.FeistelNetwork;
 import ru.namerpro.cryptography.permutaion.Permutation;
 
-public class DES implements SymmetricEncrypter, KeyExpansion, EncryptingConversion {
+public class DES implements SymmetricEncrypter, KeyExpansion, FeistelFunction {
 
     private static final int B_BLOCK_COUNT = 8;
     private static final int BITS_IN_ONE_B_BLOCK = 6;

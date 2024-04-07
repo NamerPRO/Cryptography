@@ -54,17 +54,13 @@ public class Utility {
     public static byte[] xor(byte[] left, byte[] right) {
         byte[] result = new byte[Math.max(left.length, right.length)];
         if (left.length < right.length) {
-            for (int i = 0; i < right.length - left.length; ++i) {
-                result[i] = right[i];
-            }
+            System.arraycopy(right, 0, result, 0, right.length - left.length);
             int j = right.length - left.length;
             for (int i = j; i < result.length; ++i) {
                 result[i] = (byte) (left[i - j] ^ right[i]);
             }
         } else if (left.length > right.length) {
-            for (int i = 0; i < left.length - right.length; ++i) {
-                result[i] = left[i];
-            }
+            System.arraycopy(left, 0, result, 0, left.length - right.length);
             int j = left.length - right.length;
             for (int i = j; i < result.length; ++i) {
                 result[i] = (byte) (left[i] ^ right[i - j]);

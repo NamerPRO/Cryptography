@@ -1,4 +1,4 @@
-package ru.namerpro.cryptography.api;
+package ru.namerpro.cryptography.api.probability;
 
 import java.math.BigInteger;
 

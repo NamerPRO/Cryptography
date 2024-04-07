@@ -1,8 +1,8 @@
 package ru.namerpro.cryptography.symmetricencrypters.deal;
 
-import ru.namerpro.cryptography.api.KeyExpansion;
-import ru.namerpro.cryptography.api.SymmetricEncrypter;
-import ru.namerpro.cryptography.feistel.FeistelNetwork;
+import ru.namerpro.cryptography.api.symmetric.expansion.KeyExpansion;
+import ru.namerpro.cryptography.api.symmetric.SymmetricEncrypter;
+import ru.namerpro.cryptography.network.FeistelNetwork;
 import ru.namerpro.cryptography.symmetricencrypters.des.DES;
 import ru.namerpro.cryptography.utils.Utility;
 

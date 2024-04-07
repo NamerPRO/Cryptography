@@ -1,4 +1,6 @@
-package ru.namerpro.cryptography.api;
+package ru.namerpro.cryptography.api.symmetric.modes;
+
+import ru.namerpro.cryptography.api.symmetric.SymmetricEncrypter;
 
 public interface EncryptMode {
 

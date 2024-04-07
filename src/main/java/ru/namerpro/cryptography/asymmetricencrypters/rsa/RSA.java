@@ -1,8 +1,8 @@
 package ru.namerpro.cryptography.asymmetricencrypters.rsa;
 
 import lombok.Getter;
-import ru.namerpro.cryptography.api.AsymmetricEncrypter;
-import ru.namerpro.cryptography.api.ProbabilityTest;
+import ru.namerpro.cryptography.api.asymmetric.AsymmetricEncrypter;
+import ru.namerpro.cryptography.api.probability.ProbabilityTest;
 import ru.namerpro.cryptography.probabilitytests.fermat.FermatProbabilityTest;
 import ru.namerpro.cryptography.probabilitytests.millerrabin.MillerRabinProbabilityTest;
 import ru.namerpro.cryptography.probabilitytests.solovaystrassen.SolovayStrassen;
