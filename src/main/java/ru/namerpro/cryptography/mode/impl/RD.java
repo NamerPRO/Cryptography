@@ -2,7 +2,7 @@ package ru.namerpro.cryptography.mode.impl;
 
 import ru.namerpro.cryptography.utils.Pair;
 import ru.namerpro.cryptography.utils.Utility;
-import ru.namerpro.cryptography.api.symmetric.modes.EncryptMode;
+import ru.namerpro.cryptography.api.symmetric.modes.SymmetricEncryptMode;
 import ru.namerpro.cryptography.api.symmetric.SymmetricEncrypter;
 
 import java.math.BigInteger;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-public class RD implements EncryptMode {
+public class RD implements SymmetricEncryptMode {
 
     private final ExecutorService service;
     private final BigInteger initial;

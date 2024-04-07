@@ -23,7 +23,7 @@ public class VinnerAttack {
     public static Pair<ArrayList<Pair<BigInteger, BigInteger>>, Pair<BigInteger, BigInteger>> attack(RSA.RSAKeyGenerator.PublicKey key) throws ExecutionException, InterruptedException {
         ArrayList<BigInteger> coefficients = getContinuedFraction(key.e(), key.n());
         ArrayList<Pair<BigInteger, BigInteger>> fractions = new ArrayList<>();
-        RSA rsa = new RSA(50);
+        RSA rsa = new RSA(512);
         fractions.add(Pair.of(coefficients.get(0), BigInteger.ONE));
         for (int i = 1; i < coefficients.size(); ++i) {
             fractions.add(
@@ -32,7 +32,7 @@ public class VinnerAttack {
                             coefficients.get(i).multiply(fractions.get(i - 1).getValue()).add(i == 1 ? BigInteger.ZERO : fractions.get(i - 2).getValue())
                     )
             );
-            BigInteger[] encrypted = rsa.encrypt(VINNER_ATTACK_TEST.getBytes(), key).get();
+            byte[][] encrypted = rsa.encrypt(VINNER_ATTACK_TEST.getBytes(), key).get();
             try {
                 byte[] decrypted = rsa.decrypt(encrypted, new RSA.RSAKeyGenerator.PrivateKey(fractions.get(i).getValue(), key.n())).get();
                 if (Arrays.equals(decrypted, VINNER_ATTACK_TEST.getBytes())) {

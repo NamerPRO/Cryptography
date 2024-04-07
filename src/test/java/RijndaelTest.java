@@ -8,7 +8,6 @@ import ru.namerpro.cryptography.mode.Mode;
 import ru.namerpro.cryptography.padding.Padding;
 import ru.namerpro.cryptography.symmetricencrypters.rijndael.Rijndael;
 
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 

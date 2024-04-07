@@ -1,6 +1,6 @@
 package ru.namerpro.cryptography.api.symmetric.modes;
 
-public abstract class PaddingMode {
+public abstract class SymmetricPaddingMode {
 
     public abstract byte[] add(byte[] src, int blockSize);
 

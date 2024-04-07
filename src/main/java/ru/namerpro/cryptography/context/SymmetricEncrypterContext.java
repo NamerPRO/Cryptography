@@ -1,8 +1,10 @@
 package ru.namerpro.cryptography.context;
 
-import ru.namerpro.cryptography.api.symmetric.modes.EncryptMode;
-import ru.namerpro.cryptography.api.symmetric.modes.PaddingMode;
+import ru.namerpro.cryptography.api.symmetric.modes.SymmetricEncryptMode;
+import ru.namerpro.cryptography.api.symmetric.modes.SymmetricPaddingMode;
 import ru.namerpro.cryptography.api.symmetric.SymmetricEncrypter;
+import ru.namerpro.cryptography.asymmetricencrypters.rsa.RSA;
+import ru.namerpro.cryptography.asymmetricencrypters.rsa.SymmetricRSA;
 import ru.namerpro.cryptography.context.encrypter.Encrypter;
 import ru.namerpro.cryptography.mode.Mode;
 import ru.namerpro.cryptography.padding.Padding;
@@ -29,8 +31,8 @@ import java.util.concurrent.Executors;
 public class SymmetricEncrypterContext implements AutoCloseable {
 
     private final ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-    private final EncryptMode mode;
-    private final PaddingMode padding;
+    private final SymmetricEncryptMode mode;
+    private final SymmetricPaddingMode padding;
     private final SymmetricEncrypter encrypter;
     private final int blockSize;
 
@@ -45,7 +47,7 @@ public class SymmetricEncrypterContext implements AutoCloseable {
                 this.blockSize = 16;
             }
             case RIJNDAEL -> {
-                if (!(options[0] instanceof Rijndael.RijndaelBlockSize rijndaelBlockSize)
+                if (options.length != 2 || !(options[0] instanceof Rijndael.RijndaelBlockSize rijndaelBlockSize)
                         || !(options[1] instanceof Integer modulo)) {
                     throw new IllegalArgumentException("Rijndael mode requires these constructor parameters: Encrypter encrypter, byte[] key, Mode mode, Padding padding, byte[] iv, RijndaelBlockSize rijndaelBlockSize, int modulo.");
                 }
@@ -55,6 +57,15 @@ public class SymmetricEncrypterContext implements AutoCloseable {
                     case SZ_192_BITS -> 24;
                     case SZ_256_BITS -> 32;
                 };
+            }
+            case RSA -> {
+                if (options.length != 3 || !(options[0] instanceof RSA rsa)
+                        || !(options[1] instanceof RSA.RSAKeyGenerator.PublicKey publicKey)
+                            || !(options[2] instanceof RSA.RSAKeyGenerator.PrivateKey privateKey)) {
+                    throw new IllegalArgumentException("Three constructor parameters are required in order to use RSA in symmetric mode: RSA sra, PublicKey publicKey, PrivateKey privateKey, - passed in provided order!");
+                }
+                this.encrypter = new SymmetricRSA(rsa, publicKey, privateKey);
+                this.blockSize = 32;
             }
             default -> throw new IllegalArgumentException("Unexpected error occurred while trying to set encrypter!");
         }

@@ -2,7 +2,7 @@ package ru.namerpro.cryptography.api.symmetric.modes;
 
 import ru.namerpro.cryptography.api.symmetric.SymmetricEncrypter;
 
-public interface EncryptMode {
+public interface SymmetricEncryptMode {
 
     byte[] apply(byte[] src, int blockSize, SymmetricEncrypter encrypter);
 

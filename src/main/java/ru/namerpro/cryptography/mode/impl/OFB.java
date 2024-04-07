@@ -2,11 +2,11 @@ package ru.namerpro.cryptography.mode.impl;
 
 import lombok.RequiredArgsConstructor;
 import ru.namerpro.cryptography.utils.Utility;
-import ru.namerpro.cryptography.api.symmetric.modes.EncryptMode;
+import ru.namerpro.cryptography.api.symmetric.modes.SymmetricEncryptMode;
 import ru.namerpro.cryptography.api.symmetric.SymmetricEncrypter;
 
 @RequiredArgsConstructor
-public class OFB implements EncryptMode {
+public class OFB implements SymmetricEncryptMode {
 
     private final byte[] iv;
 

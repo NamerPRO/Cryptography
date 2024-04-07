@@ -1,10 +1,10 @@
 package ru.namerpro.cryptography.padding.impl;
 
-import ru.namerpro.cryptography.api.symmetric.modes.PaddingMode;
+import ru.namerpro.cryptography.api.symmetric.modes.SymmetricPaddingMode;
 
 import java.util.Random;
 
-public class ISO10126 extends PaddingMode {
+public class ISO10126 extends SymmetricPaddingMode {
 
     private static final Random rnd = new Random();
 

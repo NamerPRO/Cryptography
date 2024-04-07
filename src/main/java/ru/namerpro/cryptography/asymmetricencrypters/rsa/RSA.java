@@ -29,7 +29,7 @@ public class RSA implements AsymmetricEncrypter {
         keyGeneratorInstance = new RSAKeyGenerator(test, probability, keyBitLength);
     }
 
-    public CompletableFuture<BigInteger[]> encrypt(byte[] text, RSAKeyGenerator.PublicKey key) {
+    public CompletableFuture<byte[][]> encrypt(byte[] text, RSAKeyGenerator.PublicKey key) {
         return CompletableFuture.supplyAsync(() -> {
             if (key.e().compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) < 0) {
                 var bucket = amountOfEncryptions.get(Pair.of(key.e(), text));
@@ -47,25 +47,26 @@ public class RSA implements AsymmetricEncrypter {
             int blockSize = key.n().toString().length();
             blockSize -= (blockSize & 1) == 0 ? 2 : 1;
             List<BigInteger> split = splitNumber(numberThatRepresentsText, blockSize);
-            BigInteger[] encrypted = new BigInteger[split.size()];
+            byte[][] encrypted = new byte[split.size()][];
             for (int i = 0; i < split.size(); ++i) {
-                encrypted[i] = CryptoMath.pow(split.get(i), key.e(), key.n());
+                BigInteger encryptedNumber = CryptoMath.pow(split.get(i), key.e(), key.n());
+                encrypted[i] = encryptedNumber.toByteArray();
             }
             return encrypted;
         });
     }
 
-    public CompletableFuture<byte[]> decrypt(BigInteger[] text, RSAKeyGenerator.PrivateKey key) {
+    public CompletableFuture<byte[]> decrypt(byte[][] text, RSAKeyGenerator.PrivateKey key) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 StringBuilder base64 = new StringBuilder();
-                for (BigInteger bigInteger : text) {
-                    String numberAsString = CryptoMath.pow(bigInteger, key.d(), key.n()).toString();
+                for (var bigIntegerAsByteArray : text) {
+                    String numberAsString = CryptoMath.pow(new BigInteger(bigIntegerAsByteArray), key.d(), key.n()).toString();
                     base64.append(numberToBase64(numberAsString));
                 }
                 return Base64.getDecoder().decode(base64.toString());
             } catch (IllegalArgumentException error) {
-                throw new SecurityException("Cannot decrypt text with given key!");
+                throw new SecurityException("Decryption error!");
             }
         });
     }
@@ -140,6 +141,10 @@ public class RSA implements AsymmetricEncrypter {
         private final int keyBitLength;
 
         public RSAKeyGenerator(ProbabilityTestType testType, float probability, int keyBitLength) {
+            if (keyBitLength < 512) {
+                throw new SecurityException("Too small keyBitLength makes it easy to hack RSA! Choose 512 bits minimum (suggested 2048).");
+            }
+
             this.testType = switch (testType) {
                 case FERMAT -> new FermatProbabilityTest();
                 case SOLOVAY_STRASSEN -> new SolovayStrassen();

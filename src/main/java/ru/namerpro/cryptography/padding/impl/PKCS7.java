@@ -1,8 +1,8 @@
 package ru.namerpro.cryptography.padding.impl;
 
-import ru.namerpro.cryptography.api.symmetric.modes.PaddingMode;
+import ru.namerpro.cryptography.api.symmetric.modes.SymmetricPaddingMode;
 
-public class PKCS7 extends PaddingMode {
+public class PKCS7 extends SymmetricPaddingMode {
 
     @Override
     public byte[] add(byte[] src, int blockSize) {

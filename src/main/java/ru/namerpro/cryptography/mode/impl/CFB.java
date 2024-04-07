@@ -3,7 +3,7 @@ package ru.namerpro.cryptography.mode.impl;
 import lombok.RequiredArgsConstructor;
 import ru.namerpro.cryptography.utils.Pair;
 import ru.namerpro.cryptography.utils.Utility;
-import ru.namerpro.cryptography.api.symmetric.modes.EncryptMode;
+import ru.namerpro.cryptography.api.symmetric.modes.SymmetricEncryptMode;
 import ru.namerpro.cryptography.api.symmetric.SymmetricEncrypter;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 @RequiredArgsConstructor
-public class CFB implements EncryptMode {
+public class CFB implements SymmetricEncryptMode {
 
     private final ExecutorService service;
     private final byte[] iv;
