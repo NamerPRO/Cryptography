@@ -20,7 +20,7 @@ public class CryptoMath {
                 a = a.divide(BigInteger.TWO);
                 reminder = n.remainder(BigInteger.valueOf(8));
                 if (reminder.equals(BigInteger.valueOf(3)) || reminder.equals(BigInteger.valueOf(5))) {
-                    answer = - answer;
+                    answer = -answer;
                 }
             }
             reminder = n;
